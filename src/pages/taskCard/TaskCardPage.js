@@ -23,9 +23,18 @@ export default class HomePage extends Component{
             </div>
         )
     }
+
+    /**
+     * @todo:问题描述
+     * @param history
+     * @function gotoTop 作用：
+     */
     gotoTop(history){
         this.props.history.push("/")
 
+    }
+    renderCard(){
+        
     }
     render(){
         console.log('当前history',this.props.history);
@@ -34,7 +43,7 @@ export default class HomePage extends Component{
                 <TopBanner title="作业卡" router={this.props.history} />
                 <div className="fx1 center">
                     {
-                        this.renderContent()
+                        this.renderCard()
                     }
                 </div>
                 <div className="cardBottom bgWhite paddingTop">

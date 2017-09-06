@@ -20,7 +20,7 @@ export default class HomePage extends Component{
             }],
             connect:false,//推送提示相关
 
-            isShowModal:true,
+            isShowModal:false,
             //离开页面的时候要把关闭遮罩层
             currentIndex:0,
         }
@@ -65,7 +65,7 @@ export default class HomePage extends Component{
                         this.state.tasks.map((item,index) => {
                             return (
                                 <div key={index} className="marginTop marginLeft marginRight bgWhite">
-                                    <div className="baseInfo padding">
+                                    <div onClick={()=>{this.props.history.push('/taskDetail')}} className="baseInfo padding">
                                         <p>{item.taskTitle}</p>
                                         <p className="note smallSize marginTop">{item.course}</p>
                                         <p className="note smallSize marginTop"><span className="colorRed">{item.hasComplated}</span>人已交作业</p>
