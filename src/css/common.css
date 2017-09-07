@@ -73,6 +73,7 @@ a{
     width: 100%;
     height: 50px;
     box-sizing: border-box;
+    justify-content: space-between;
 }
 .switch{
     width: 40px;
@@ -115,6 +116,12 @@ a{
 .colorWhite{
     color: white;
 }
+.colorNote{
+    color: #aaaaaa;
+}
+.colorNote1{
+    color: #999999;
+}
 /*背景颜色*/
 .bgWhite{
     background-color: white;
@@ -124,6 +131,9 @@ a{
 }
 .bgBlack{
     background-color: black;
+}
+.bgOrange{
+    background-color: orange;
 }
 /*边距*/
 .marginTop{
@@ -176,6 +186,12 @@ a{
 
 .smallSize{
     font-size: 12px;
+}
+.baseSize{
+    font-size: 14px;
+}
+.bigSize{
+    font-size: 16px;
 }
 /*按钮*/
 .bigBtn{

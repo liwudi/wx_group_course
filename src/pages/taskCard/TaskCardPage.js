@@ -30,7 +30,7 @@ export default class HomePage extends Component{
      * @function gotoTop 作用：
      */
     gotoTop(history){
-        this.props.history.push("/")
+        this.props.history.push("/home")
 
     }
     renderCard(){
@@ -42,9 +42,18 @@ export default class HomePage extends Component{
             <div className="pageBox">
                 <TopBanner title="作业卡" router={this.props.history} />
                 <div className="fx1 center">
-                    {
-                        this.renderCard()
-                    }
+                    <div className="bgWhite paddingBottom" style={{width:'80%',borderRadius:'10px',overflow:"hidden"}}>
+                        <div className="colorWhite center bgOrange" style={{width:"100%",height:'40px'}}>作业卡</div>
+                        <div className="center" style={{width:'100%',height:'50px'}}>数学</div>
+                        <div className="center" style={{width:'100%',height:'50px'}}>我是一个小逗比，咿呀咿呀咦！！</div>
+                        <div className="center" style={{width:'100%',height:'100px'}}>
+                            二维码图片区
+                        </div>
+                        <div>
+                            <p className="center note padding">长按扫描二维码领取作业</p>
+                            <p className="center note padding">完成作业即可获得专属成就卡</p>
+                        </div>
+                    </div>
                 </div>
                 <div className="cardBottom bgWhite paddingTop">
                     <p className="center">长按保存图片，可在课程内发送</p>

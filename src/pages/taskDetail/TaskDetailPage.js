@@ -6,20 +6,60 @@ import { BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import '../../css/common.css';
 import './css/taskDetail.css'
 import TopBanner from '../../components/TopBanner';
+import ViewForRightDom from '../../components/ViewForRightDom';
+import Modal2 from '../../components/Modal2';
 
+
+import { deleteItemByIndex } from '../../assets/utils/utils';
 export default class TaskDetail extends Component{
     constructor(props){
         super(props);
         this.state = {
             taskTitle:'数学',
-            taskContent:'我是一个小逗比，咿呀咿呀咦！！'
+            taskContent:'我是一个小逗比，咿呀咿呀咦！！',
+            compoleteNumber:3,
+            numberList:[{
+                imageUrl:'/src/assets/images/TaskDetail.jpg',
+                title:'山花烂漫时',
+                time:'2017-8-29 15:02:02',
+                content:'今天作业已完成',
+                voice:'',
+                taskImage:['/src/assets/images/TaskDetail.jpg','/src/assets/images/TaskDetail.jpg'],
+                comments:[{content:'你不错',name:'liwudi'},{content:'你太棒了！',name:'teacher'}],
+                praise:4
+            },{
+                imageUrl:'/src/assets/images/TaskDetail.jpg',
+                title:'山花烂漫时',
+                time:'2017-8-29 15:02:02',
+                content:'今天作业已完成',
+                voice:'',
+                taskImage:['/src/assets/images/TaskDetail.jpg','/src/assets/images/TaskDetail.jpg'],
+                comments:[{content:'你不错',name:'liwudi'},{content:'你太棒了！',name:'teacher'}],
+                praise:4
+            },{
+                imageUrl:'/src/assets/images/TaskDetail.jpg',
+                title:'山花烂漫时',
+                time:'2017-8-29 15:02:02',
+                content:'今天作业已完成',
+                voice:'',
+                taskImage:['/src/assets/images/TaskDetail.jpg','/src/assets/images/TaskDetail.jpg'],
+                comments:[{content:'你不错',name:'liwudi'},{content:'你太棒了！',name:'teacher'}],
+                praise:4
+            }],
+            isShowDelete:false
         }
+    }
+    deleteEvent(){
+        //console.log(this.state.numberList,this.state.currentDeleteIndex)
+        const arr = deleteItemByIndex(this.state.numberList,this.state.currentDeleteIndex);
+
+        this.setState({numberList:arr,isShowDelete:false});
     }
     render(){
         return (
             <div className="pageBox">
                 <TopBanner title="作业详情" router={this.props.history} />
-                <div className="fx1 bgWhite borderTop">
+                <div className="fx1 bgWhite borderTop" style={{overflow:'auto'}}>
                     <div className="detail">
                         <div className='center marginTop'>
                             <img className="img" src="/src/assets/images/TaskDetail.jpg" />
@@ -33,9 +73,86 @@ export default class TaskDetail extends Component{
                         </div>
                     </div>
                     <div className="note smallSize center padding" style={{backgroundColor:'#f1f1f1'}}>
-                        ---- 暂无提交 ----
+                        ---- {this.state.compoleteNumber ? this.state.compoleteNumber+"人提交":"暂无提交"} ----
                     </div>
+                    {
+                        this.state.numberList.map((item,index)=>{
+                            return (
+                                <div key={index} className="list padding">
+                                    <div className="item disFx borderBottom paddingBottom">
+                                        <div className="itemLeft">
+                                            <img src={item.imageUrl} style={{width:'30px',height:'30px',borderRadius:'50%'}}/>
+                                        </div>
+                                        <div className="itemRight fx1">
+                                            <div className="disFx">
+                                                <div className="fx1">
+                                                    <p className="colorNote1 baseSize">{item.title}</p>
+                                                    <p className="colorNote smallSize">{item.time}</p>
+                                                </div>
+                                                <div onClick={()=>{this.setState({isShowDelete:true,currentDeleteIndex:index})}} className="bigSize marginRight">...</div>
+                                            </div>
+                                            <p className="marginTop">{item.content}</p>
+                                            <div>
+
+                                            </div>
+                                            <div className="taskImages disFx marginTop">
+                                                {
+                                                    item.taskImage.map((i,idx)=>{
+                                                        return (
+                                                            <img
+                                                                key={idx}
+                                                                className="marginRight"
+                                                                style={{width:'70px',height:'70px'}}
+                                                                src={i}
+                                                            />
+                                                        )
+                                                    })
+                                                }
+
+                                            </div>
+                                            <div className="padding disFx">
+                                                <div>
+                                                    <span>点评</span>
+                                                </div>
+                                                <div className="marginLeft">
+                                                    <span className="marginLeft">点赞 3</span>
+                                                </div>
+                                            </div>
+                                            {
+                                                item.comments.map((item,idx)=>{
+                                                    return (
+                                                        <div key={idx} className="border marginRight">
+                                                            <p className="padding margin">
+                                                                <span>{item.name}:</span>
+                                                                <span>{item.content}</span>
+                                                            </p>
+                                                        </div>
+                                                    )
+                                                })
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+
+
                 </div>
+                {
+                    this.state.isShowDelete?
+                        <Modal2 onCancel={()=>this.setState({isShowDelete:false})} >
+                            <ViewForRightDom title="删除" onClick={()=>this.deleteEvent()} />
+                            <div
+                                className="center bgWhite"
+                                style={{width:'100%',height:"50px",borderTop:'10px solid #cccccc'}}
+                                onClick={()=>this.setState({isShowDelete:false})}
+                            >
+                                取消
+                            </div>
+                        </Modal2>:null
+                }
             </div>
         )
     }

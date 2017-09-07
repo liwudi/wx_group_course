@@ -8,15 +8,20 @@ export default class TopBanner extends Component{
         super(props);
     }
     goBack(){
-        console.log('goback');
-        console.log(this.props.router);
-        console.log(this.props.history);
-        this.props.router.goBack();
+        this.props.router && this.props.router.goBack();
     }
     leftView(){
-        return(
-            <span onClick={() => this.goBack()} className="topBannerLeft center">back</span>
-        )
+        if(this.props.leftView){
+            return this.props.leftView();
+        }else{
+            return (
+                <div onClick={() => this.goBack()} className="topBannerLeft center" >
+                    <img style={{width:'20px',height:'20px'}} src="/src/assets/images/leftArrow.png" />
+                </div>
+            )
+
+        }
+
     }
     render(){
         return (
