@@ -7,6 +7,8 @@ import '../../css/common.css';
 import TopBanner from '../../components/TopBanner';
 import NewTask from '../../components/NewTask';
 import ViewForRightDom from '../../components/ViewForRightDom';
+
+import { getList } from '../../services/AppServices';
 export default class HomePage extends Component{
     constructor(props){
         super(props);
@@ -50,6 +52,14 @@ export default class HomePage extends Component{
             })
         })
     }
+
+
+    componentDidMount(){
+        getList().then(res => {
+            console.log('获取的数据',res);
+        })
+    }
+
     renderContent(){
         if(this.state.tasks.length == 0){
             return (

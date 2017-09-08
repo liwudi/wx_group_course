@@ -55,6 +55,20 @@ export default class TaskDetail extends Component{
 
         this.setState({numberList:arr,isShowDelete:false});
     }
+    renderSpeak(){
+        return (
+            <div className="rowCenter" style={{width:'100%',height:'50px',backgroundColor:'#f1f1f1',justifyContent:'space-around'}}>
+
+                <img className="iconDefault" style={{width:'40px',height:'25px'}} src="/src/assets/images/speaks.png" />
+                <input type="text" placeholder="请输入评论" className="inputDefault paddingLeft" style={{width:"60%",height:'30px',backgroundColor:'#cccccc',borderRadius:'5px'}} />
+                <span
+                    className="colorWhite bgOrange paddingLeft paddingRight"
+                    style={{borderRadius:'10px',padding:'3px 10px'}}
+                    onClick={()=>this.setState({isSpeak:false})}
+                >发送</span>
+            </div>
+        )
+    }
     render(){
         return (
             <div className="pageBox">
@@ -88,7 +102,7 @@ export default class TaskDetail extends Component{
                                                 <div className="fx1">
                                                     <p className="colorNote1 baseSize">{item.title}</p>
                                                     <p className="colorNote smallSize">{item.time}</p>
-                                                </div>
+                                            </div>
                                                 <div onClick={()=>{this.setState({isShowDelete:true,currentDeleteIndex:index})}} className="bigSize marginRight">...</div>
                                             </div>
                                             <p className="marginTop">{item.content}</p>
@@ -111,11 +125,11 @@ export default class TaskDetail extends Component{
 
                                             </div>
                                             <div className="padding disFx">
-                                                <div>
-                                                    <span>点评</span>
+                                                <div className="rowCenter" style={{width:'100%',height:'40px',overflow:'hidden'}}>
+                                                    <img onClick={()=>this.setState({isSpeak:true})} src="/src/assets/images/comments.png" className="iconDefault" /><span onClick={()=>this.setState({isSpeak:true})} className="marginLeft">点评</span>
                                                 </div>
-                                                <div className="marginLeft">
-                                                    <span className="marginLeft">点赞 3</span>
+                                                <div className="rowCenter" style={{width:'100%',height:'40px',overflow:'hidden'}}>
+                                                    <img src="/src/assets/images/pramise.png"  className="iconDefault" /><span className="marginLeft">3</span>
                                                 </div>
                                             </div>
                                             {
@@ -152,6 +166,9 @@ export default class TaskDetail extends Component{
                                 取消
                             </div>
                         </Modal2>:null
+                }
+                {
+                    this.state.isSpeak ? this.renderSpeak() : null
                 }
             </div>
         )

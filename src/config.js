@@ -5,7 +5,7 @@
 
 //线上环境
 const service = {
-    main_url:``
+    main_url:`http://datainfo.duapp.com/shopdata/getclass.php`
 };
 
 
@@ -16,5 +16,5 @@ const service_test = {
 
 
 export default {
-    server: service_test
+    server: service
 }
