@@ -4,14 +4,26 @@
 import { TYPES } from '../actions/index';
 
 const TASK_STATE = {
-    taskContent:''
+    taskTitle:'',
+    taskContent:'',
+    taskId:null
 };
 export function taskStore(state = TASK_STATE,action) {
     switch (action.type){
         case TYPES.ADDTSAK_CONTENT:
-            return {
+            return Object.assign(TASK_STATE,{
                 taskContent:action.taskContent
-            };
+            });
+            break;
+        case TYPES.ADDTSAK_TITLE:
+            return Object.assign(TASK_STATE,{
+                taskTitle:action.taskTitle
+            });
+            break;
+        case TYPES.ADDTASK_ID:
+            return Object.assign(TASK_STATE,{
+                taskId:action.taskId
+            });
         default:
             return state
     }

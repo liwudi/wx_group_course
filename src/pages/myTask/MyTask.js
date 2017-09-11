@@ -7,6 +7,9 @@ import '../../css/common.css';
 import TopBanner from '../../components/TopBanner';
 import Button from '../../components/Button';
 
+
+import { saveTaskFinished } from '../../services/AppServices';
+
 export default class TaskDetail extends Component{
     constructor(props){
         super(props);
@@ -15,6 +18,17 @@ export default class TaskDetail extends Component{
             taskContent:'我是一个小逗比，咿呀咿呀咦！！',
 
         }
+    }
+    fetchData(){
+        let content = this.state.taskContent;
+        let taskSubjectId = 1;
+        let userId = 100;
+        saveTaskFinished(content,taskSubjectId,userId).then(res => {
+            console.log(res);
+        })
+    }
+    componentDidMount(){
+        this.fetchData();
     }
     render(){
         return (

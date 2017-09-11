@@ -9,7 +9,7 @@ import TopBanner from '../../components/TopBanner';
 import ViewForRightDom from '../../components/ViewForRightDom';
 import Modal2 from '../../components/Modal2';
 
-
+import { getTaskFinishedList,findTaskSubjectById } from '../../services/AppServices';
 import { deleteItemByIndex } from '../../assets/utils/utils';
 export default class TaskDetail extends Component{
     constructor(props){
@@ -54,6 +54,30 @@ export default class TaskDetail extends Component{
         const arr = deleteItemByIndex(this.state.numberList,this.state.currentDeleteIndex);
 
         this.setState({numberList:arr,isShowDelete:false});
+    }
+    fetchData(){
+        let taskSubjectId = this.props.match.params.id;
+        let page = 1;
+        let rows = 10;
+        getTaskFinishedList(taskSubjectId,page,rows).then(res => {
+            console.log('getTaskFinishedList',res);
+            res = JSON.parse(res);
+            this.setState({
+                compoleteNumber:res.total,
+                numberList:res.rows
+
+            })
+        });
+        findTaskSubjectById(taskSubjectId).then(res => {
+            res = JSON.parse(res);
+            this.setState({
+                taskTitle:res.subject,
+                taskContent:res.content
+            })
+        });
+    }
+    componentDidMount(){
+        this.fetchData();
     }
     renderSpeak(){
         return (

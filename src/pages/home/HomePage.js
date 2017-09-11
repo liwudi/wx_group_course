@@ -8,17 +8,18 @@ import TopBanner from '../../components/TopBanner';
 import NewTask from '../../components/NewTask';
 import ViewForRightDom from '../../components/ViewForRightDom';
 
-import { getList } from '../../services/AppServices';
-export default class HomePage extends Component{
+import { connect } from 'react-redux';
+import {
+    TYPES,
+    TaskActions
+} from '../../actions/index';
+import { getTaskSubjectList,deleteTaskSubject } from '../../services/AppServices';
+class HomePage extends Component{
     constructor(props){
         super(props);
         this.state = {
             tasks:[{
-                taskTitle:'数学',
-                taskContent:'11111111',
-                course:'无关联课程',
-                connect:true,//是否关联课程
-                hasComplated:3
+
             }],
             connect:false,//推送提示相关
 
@@ -42,22 +43,50 @@ export default class HomePage extends Component{
             })
         }
     }
-    deleteEvent(index){
-        index = 0;
+    closeShowModal(){
         this.setState({
-            tasks:[]
-        },()=>{
-            this.setState({
-                isShowModal:false
-            })
+            isShowModal:false
         })
     }
-
-
-    componentDidMount(){
-        getList().then(res => {
-            console.log('获取的数据',res);
+    deleteEvent(){
+        let subjectId = this.state.tasks[this.state.editIndex].id;
+        deleteTaskSubject(subjectId).then(res => {
+            console.log(res);
+            this.fetchData(this.closeShowModal());
         })
+    }
+    editEvent(){
+        let subjectId = this.state.tasks[this.state.editIndex].id;
+        this.props.dispatch(TaskActions.taskId(subjectId));
+        this.props.dispatch(TaskActions.taskTitle(''));
+        this.props.dispatch(TaskActions.taskContent(''));
+        this.props.history.push(`/setTaskPage/${true}`);
+    }
+    setTaskEvent(){
+        this.props.dispatch(TaskActions.taskId(''));
+        this.props.dispatch(TaskActions.taskTitle(''));
+        this.props.dispatch(TaskActions.taskContent(''));
+        this.props.history.push(`/setTaskPage/${false}`);
+    }
+    gotoDetailEvent(index){
+
+        let id = this.state.tasks[index].id;
+
+        this.props.history.push(`/taskDetail/${id}`)
+    }
+    fetchData(next){
+        getTaskSubjectList().then(res=>{
+            console.log('getTaskSubjectList',res);
+            res = JSON.parse(res);
+            this.setState({
+                tasks:res.rows
+            },() => {
+               next && next();
+            });
+        })
+    }
+    componentDidMount(){
+        this.fetchData();
     }
 
     renderContent(){
@@ -75,15 +104,15 @@ export default class HomePage extends Component{
                         this.state.tasks.map((item,index) => {
                             return (
                                 <div key={index} className="marginTop marginLeft marginRight bgWhite">
-                                    <div onClick={()=>{this.props.history.push('/taskDetail')}} className="baseInfo padding">
-                                        <p>{item.taskTitle}</p>
-                                        <p className="note smallSize marginTop">{item.course}</p>
+                                    <div onClick={()=>{this.gotoDetailEvent(index)}} className="baseInfo padding">
+                                        <p>{item.subject}</p>
+                                        <p className="note smallSize marginTop">{item.content}</p>
                                         <p className="note smallSize marginTop"><span className="colorRed">{item.hasComplated}</span>人已交作业</p>
                                     </div>
                                     <div className="functionLink disFx paddingTop paddingBottom" style={{backgroundColor:'#f9f9f9',color:"#999999"}}>
                                         <p onClick={()=>{this.itemEvent(index)}} className="fx1 center borderRight">推送通知</p>
                                         <p onClick={()=>{this.props.history.push('/taskCard')}} className="fx1 center borderRight">获取作业卡</p>
-                                        <p onClick={()=>{this.setState({isShowModal:true})}} className="fx1 center">设置</p>
+                                        <p onClick={()=>{this.setState({isShowModal:true,editIndex:index})}} className="fx1 center">设置</p>
                                     </div>
                                 </div>
                             )
@@ -109,7 +138,7 @@ export default class HomePage extends Component{
             <div className="fx1 disFx" style={{flexDirection:"column",backgroundColor:"rgba(0,0,0,0.5)",position:'absolute',left:0,top:0,zIndex:100,width:"100%",height:"100%"}}>
                 <div className="fx1"></div>
                 <div className="bgWhite">
-                    <ViewForRightDom title="编辑" onClick={()=>this.props.history.push('/setTaskPage')} />
+                    <ViewForRightDom title="编辑" onClick={()=>this.editEvent()} />
                     <ViewForRightDom title="删除" onClick={()=>this.deleteEvent()} />
                     <div
                         className="center bgWhite"
@@ -126,13 +155,14 @@ export default class HomePage extends Component{
         return(
             <div className="pageBox" style={{position:'relative'}}>
                 <TopBanner title="作业管理" router={this.props.history} />
-                <div className="fx1 center">
+                <div className="fx1 center" style={{overflow:'auto'}}>
                     {
                         this.renderContent()
                     }
                 </div>
                 <NewTask>
-                    <Link to="/setTaskPage">布置作业</Link>
+
+                    <span onClick={() => this.setTaskEvent()}>布置作业</span>
                 </NewTask>
                 {
                     this.state.connect?this.showPrompt():null
@@ -144,3 +174,10 @@ export default class HomePage extends Component{
         )
     }
 }
+
+
+export default connect((store) => {
+    return {
+        store: store
+    }
+})(HomePage);

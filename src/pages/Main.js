@@ -24,11 +24,11 @@ export default class Main extends Component{
                     <Route exact path="/" component={Entry}/>
                     <Route path="/home" component={HomePage}/>
 
-                    <Route path="/setTaskPage" component={SetTaskPage} />
+                    <Route path="/setTaskPage/:isEditPage" component={SetTaskPage} />
                     <Route path="/taskContent" component={TaskContent} />
                     <Route path="/relatedCourses" component={RelatedCoursePage} />
                     <Route path="/taskCard" component={TaskCardPage} />
-                    <Route path="/taskDetail" component={TaskDetailPage} />
+                    <Route path="/taskDetail/:id" component={TaskDetailPage} />
 
                     <Route path="/mytask" component={MyTask} />
 

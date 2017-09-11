@@ -12,26 +12,58 @@ import Modal from '../../components/Modal';
 
 import ViewForRightArrow from '../../components/ViewForRightArrow';
 
+import { findTaskSubjectById,saveTaskSubject,updateTaskSubject } from '../../services/AppServices';
+
+
+import {
+    TYPES,
+    TaskActions
+} from '../../actions/index';
 class SetTaskPage extends Component{
     constructor(props){
         super(props);
         this.state = {
-            taskTitle:null,
+            taskTitle:props.taskStore.taskTitle,
 
             isChecked:false,
             isShowModal:false,
             taskContent:props.taskStore.taskContent
         }
     }
+    getCardEvent(){
+        let id = this.props.taskStore.taskId;
+        let userid = 123;
+        let subject = this.props.taskStore.taskTitle || this.state.taskTitle;
+        let content = this.props.taskStore.taskContent || this.state.taskContent;
+
+        this.isGetFromEdit() && updateTaskSubject(subject,content,id,userid).then(res => {
+            this.props.history.goBack();
+        });
+        !this.isGetFromEdit() && saveTaskSubject(subject,content,userid).then(res => {
+            console.log('saveTaskSubject',res);
+            this.props.history.push('/taskCard')
+        });
+    }
     changeStateEvent(){
+        return;
+
         this.setState({
             isChecked:!this.state.isChecked
         })
     }
+    isGetFromEdit(){
+        console.log(this.props.match.params.isEditPage);
+        if(this.props.match.params.isEditPage === 'true'){
+            return true
+        }else{
+            return false
+        }
+        //return Boolean(this.props.match.params.isEditPage);
+    }
     confirmEvent() {
         const dealInput = (value) => {
+            this.props.dispatch(TaskActions.taskTitle(value));
             this.setState({
-                taskTitle:value,
                 isShowModal:false
             })
         };
@@ -40,10 +72,22 @@ class SetTaskPage extends Component{
     cancelEvent(){
         this.setState({isShowModal:false})
     }
+    fetchData(){
 
+        findTaskSubjectById(this.props.taskStore.taskId).then(res => {
+            console.log('获取的数据',res);
+            res = JSON.parse(res);
+            //this.props.dispatch(TaskActions.taskTitle(res.subject));
+            this.setState({
+                taskTitle:res.subject,
+                taskContent:res.content
+            })
+        })
+    }
 
     componentDidMount(){
-        //
+        //alert(1);
+        this.isGetFromEdit() && this.fetchData();
     }
 
     renderTab(){
@@ -66,32 +110,32 @@ class SetTaskPage extends Component{
         }
 
     }
-    renderModal(){
-        return (
-            <div style={{width:"100%",height:"100%",position:"absolute",left:0,top:0,backgroundColor:'rgba(0,0,0,0.5)'}}>
-                <div className="bgWhite" style={{width:'70%',position:'absolute',left:"15%",top:"30%",borderRadius:'10px'}}>
-                    <p className="center padding">作业标题</p>
-                    <div className="inputBox center" >
-                        <div className="inputContainer center" style={{backgroundColor:'#f1f1f1'}}>
-                            <input className="inputDefault" type="text" placeholder="请输入标题" value={this.state.taskTitle} autoFocus={true} />
-                        </div>
-
-                    </div>
-                    <div className="borderTop disFx marginTop">
-                        <div className="fx1 center padding borderRight">取消</div>
-                        <div className="fx1 center padding colorRed">确定</div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
+    // renderModal(){
+    //     return (
+    //         <div style={{width:"100%",height:"100%",position:"absolute",left:0,top:0,backgroundColor:'rgba(0,0,0,0.5)'}}>
+    //             <div className="bgWhite" style={{width:'70%',position:'absolute',left:"15%",top:"30%",borderRadius:'10px'}}>
+    //                 <p className="center padding">作业标题</p>
+    //                 <div className="inputBox center" >
+    //                     <div className="inputContainer center" style={{backgroundColor:'#f1f1f1'}}>
+    //                         <input className="inputDefault" type="text" placeholder="请输入标题" value={this.state.taskTitle} autoFocus={true} />
+    //                     </div>
+    //
+    //                 </div>
+    //                 <div className="borderTop disFx marginTop">
+    //                     <div className="fx1 center padding borderRight">取消</div>
+    //                     <div className="fx1 center padding colorRed">确定</div>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     )
+    // }
 
 
     render(){
         const _rightView =  () => {
             return (
                 <div className="rowCenter">
-                    <span className="note">{this.state.taskTitle || '请输入标题'}</span>
+                    <span className="note">{this.props.taskStore.taskTitle || this.state.taskTitle || '请输入标题'}</span>
                     <img className="iconRightArrow" src="/src/assets/images/rightArrow.png" />
                 </div>
             )
@@ -100,7 +144,7 @@ class SetTaskPage extends Component{
         const _rightViewContent = () => {
             return (
                 <div className="rowCenter">
-                    <span className="note">{this.state.taskContent || '请输入标题'}</span>
+                    <span className="note">{this.props.taskStore.taskContent || this.state.taskContent || '请输入内容'}</span>
                     <img className="iconRightArrow" src="/src/assets/images/rightArrow.png" />
                 </div>
             )
@@ -128,7 +172,7 @@ class SetTaskPage extends Component{
                             title='关联课程'
                             style={{borderBottom:'1px solid #cccccc',justifyContent:'space-between'}}
                             prompt="未关联"
-                            onClick={()=>{this.props.history.push('/relatedCourses')}}
+                            onClick={()=>{return;this.props.history.push('/relatedCourses')}}
                         />
                         <ViewForRightArrow
                             title='仅课程报名者可交作业'
@@ -141,7 +185,7 @@ class SetTaskPage extends Component{
                     <div
                         className="bigBtn center bgred"
 
-                        onClick={()=>{this.props.history.push('/taskCard')}}
+                        onClick={()=>{this.getCardEvent()}}
                     >保存并且获取作业卡</div>
                 </div>
                 {
@@ -161,7 +205,7 @@ class SetTaskPage extends Component{
 }
 
 export default connect((store)=>{
-    console.log(store)
+    console.log(store);
     return {
         taskStore:store.taskStore
     }
