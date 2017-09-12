@@ -3,11 +3,9 @@
  */
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import '../../css/common.css';
 import '../../css/setTaskPage.css';
 import TopBanner from '../../components/TopBanner';
-import NewTask from '../../components/NewTask';
 import Modal from '../../components/Modal';
 
 import ViewForRightArrow from '../../components/ViewForRightArrow';
@@ -136,7 +134,7 @@ class SetTaskPage extends Component{
             return (
                 <div className="rowCenter">
                     <span className="note">{this.props.taskStore.taskTitle || this.state.taskTitle || '请输入标题'}</span>
-                    <img className="iconRightArrow" src="/src/assets/images/rightArrow.png" />
+                    <img className="iconRightArrow" src={require("../../assets/images/rightArrow.png")} />
                 </div>
             )
 
@@ -145,7 +143,7 @@ class SetTaskPage extends Component{
             return (
                 <div className="rowCenter">
                     <span className="note">{this.props.taskStore.taskContent || this.state.taskContent || '请输入内容'}</span>
-                    <img className="iconRightArrow" src="/src/assets/images/rightArrow.png" />
+                    <img className="iconRightArrow" src={require("../../assets/images/rightArrow.png")} />
                 </div>
             )
         };
@@ -162,7 +160,7 @@ class SetTaskPage extends Component{
                         />
                         <ViewForRightArrow
                             title='作业内容'
-                            onClick={()=>{this.props.history.push('/taskContent')}}
+                            onClick={()=>{this.props.history.push(`/taskContent/${true}`)}}
                             rightView={()=>_rightViewContent()}
                             style={{justifyContent:'space-between'}}
                         />

@@ -18,9 +18,7 @@ class HomePage extends Component{
     constructor(props){
         super(props);
         this.state = {
-            tasks:[{
-
-            }],
+            tasks:[],
             connect:false,//推送提示相关
 
             isShowModal:false,
@@ -107,7 +105,7 @@ class HomePage extends Component{
                                     <div onClick={()=>{this.gotoDetailEvent(index)}} className="baseInfo padding">
                                         <p>{item.subject}</p>
                                         <p className="note smallSize marginTop">{item.content}</p>
-                                        <p className="note smallSize marginTop"><span className="colorRed">{item.hasComplated}</span>人已交作业</p>
+                                        <p className="note smallSize marginTop"><span className="colorRed">{item.hasComplated || 0}</span>人已交作业</p>
                                     </div>
                                     <div className="functionLink disFx paddingTop paddingBottom" style={{backgroundColor:'#f9f9f9',color:"#999999"}}>
                                         <p onClick={()=>{this.itemEvent(index)}} className="fx1 center borderRight">推送通知</p>

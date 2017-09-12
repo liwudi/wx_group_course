@@ -2,7 +2,6 @@
  * Created by mapbar_front on 2017/9/7.
  */
 import React,{ Component } from 'react';
-import { BrowserRouter as Router, Link, Route} from 'react-router-dom';
 import '../../css/common.css';
 import TopBanner from '../../components/TopBanner';
 import Button from '../../components/Button';
@@ -10,7 +9,9 @@ import Button from '../../components/Button';
 
 import { saveTaskFinished } from '../../services/AppServices';
 
-export default class TaskDetail extends Component{
+import { connect } from 'react-redux';
+
+class MyTask extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -37,7 +38,7 @@ export default class TaskDetail extends Component{
                 <div className="fx1 bgWhite borderTop">
                     <div className="detail">
                         <div className='center marginTop'>
-                            <img className="img" src="/src/assets/images/TaskDetail.jpg" />
+                            <img className="img" src={require("../../assets/images/TaskDetail.jpg")} />
                         </div>
                         <div className="center padding">{this.state.taskTitle||'任务标题'}</div>
                         <div
@@ -52,10 +53,17 @@ export default class TaskDetail extends Component{
                     </div>
 
                     <div className="center marginTop">
-                        <Button onClick={()=>this.props.history.push('/taskContent')} title="交作业" style={{width:"100px",height:"35px"}} />
+                        <Button onClick={()=>this.props.history.push(`/taskContent/${false}`)} title="交作业" style={{width:"100px",height:"35px"}} />
                     </div>
                 </div>
             </div>
         )
     }
 }
+
+export default connect((store) => {
+    console.log(store);
+    return {
+       store: store
+    }
+})(MyTask)

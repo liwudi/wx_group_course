@@ -16,7 +16,7 @@ export default class TopBanner extends Component{
         }else{
             return (
                 <div onClick={() => this.goBack()} className="topBannerLeft center" >
-                    <img style={{width:'20px',height:'20px'}} src="/src/assets/images/leftArrow.png" />
+                    <img style={{width:'20px',height:'20px'}} src={require("../assets/images/leftArrow.png")} />
                 </div>
             )
 

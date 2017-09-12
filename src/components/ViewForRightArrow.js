@@ -20,14 +20,14 @@ export default class HomePage extends Component{
             return (
                 <div className="rowCenter">
                     <span className="note">{this.props.prompt}</span>
-                    <img className="iconRightArrow" src="/src/assets/images/rightArrow.png" />
+                    <img className="iconRightArrow" src={require("../assets/images/rightArrow.png")} />
                 </div>
             )
         }else{
             return (
                 <div className="rowCenter">
                     <span className="note">未填写</span>
-                    <img className="iconRightArrow" src="/src/assets/images/rightArrow.png" />
+                    <img className="iconRightArrow" src={require("../assets/images/rightArrow.png")} />
                 </div>
             )
         }
