@@ -77,7 +77,7 @@ class HomePage extends Component{
             console.log('getTaskSubjectList',res);
             res = JSON.parse(res);
             this.setState({
-                tasks:res.rows
+                tasks:res.rows || []
             },() => {
                next && next();
             });
